@@ -1,3 +1,3 @@
 (defproject sqleton "0.0.1-SNAPSHOT"
-  :description "TODO: add summary of your project"
+  :description "SQL tools for Clojure."
   :dependencies [[clojure "1.2.0"]])
