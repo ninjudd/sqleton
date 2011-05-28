@@ -2,14 +2,12 @@
   (:use cake
         [bake.core :only [in-cake-jvm?]]
         [clojure.contrib.string :only [join split]]
-        [clojure.contrib.sql :only [with-query-results connection with-connection]]
-        [clojure.java.io :only [file]])
-  (:import [java.io File]))
+        [clojure.contrib.sql :only [with-connection]]))
 
 (def *datasource* nil)
 
 (defn load-user-config [name]
-  (let [overrides (File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact *project*) ".clj"))]
+  (let [overrides (java.io.File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact *project*) ".clj"))]
     (when (.exists overrides)
       (get-in (read-string (slurp overrides)) name))))
 
@@ -29,11 +27,11 @@
       (get-in *project* [:db name]))
     {:name name}))
 
-(defmacro with-connection
+(defmacro with-db
   "Create a connection to a specific db if there is not one for this thread already."
   [name & forms]
-  `(if (= name (:name (meta *datasource*)))
+  `(if (= ~name (:name (meta *datasource*)))
      (do ~@forms)
-     (binding [*datasource* (datasource name)]
+     (binding [*datasource* (datasource ~name)]
        (with-connection *datasource*
          ~@forms))))
