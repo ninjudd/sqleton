@@ -7,7 +7,7 @@
 (def *datasource* nil)
 
 (defn load-user-config [name]
-  (let [overrides (java.io.File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact *project*) ".clj"))]
+  (let [overrides (java.io.File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact-id *project*) ".clj"))]
     (when (.exists overrides)
       (get-in (read-string (slurp overrides)) name))))
 
