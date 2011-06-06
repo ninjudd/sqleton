@@ -9,7 +9,7 @@
 (defn load-user-config [name]
   (let [overrides (java.io.File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact-id *project*) ".clj"))]
     (when (.exists overrides)
-      (get-in (read-string (slurp overrides)) name))))
+      (get (read-string (slurp overrides)) name))))
 
 (defn datasource
   "Returns a map appropriate for either a jndi or traditional data source."
