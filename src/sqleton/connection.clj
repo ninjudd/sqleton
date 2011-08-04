@@ -33,6 +33,8 @@
             (get-in *project* [:db source-name])))
     {:name source-name}))
 
+(def pg-connection-error #{"08000" "08001" "08003" "08004" "08006" "28000" "3D000"})
+
 (defmacro with-db
   "Create a connection to a specific db if there is not one for this thread already."
   [source-name & forms]
@@ -43,5 +45,7 @@
          (with-connection *datasource*
            ~@forms)
          (catch java.sql.SQLException e#
-           (throw (java.sql.SQLException.
-                   (str "Could not connect to: " (pr-str *datasource*)))))))))
+           (if (pg-connection-error (.getSQLState e#))
+             (throw (java.sql.SQLException.
+                     (str "Could not connect to: " (pr-str *datasource*)) e#))
+             (throw e#)))))))
