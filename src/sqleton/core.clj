@@ -1,5 +1,5 @@
 (ns sqleton.core
-  (:require [clojure.contrib.sql :as sql]))
+  (:require [clojure.java.jdbc :as sql]))
 
 (defn execute-file [file]
   (sql/do-commands (slurp file)))

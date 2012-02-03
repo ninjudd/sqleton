@@ -1,10 +1,10 @@
 (ns sqleton.connection
   (:use cake
         [bake.core :only [in-cake-jvm?]]
-        [clojure.contrib.string :only [join split]]
-        [clojure.contrib.sql :only [with-connection]]))
+        [clojure.string :only [join]]
+        [clojure.java.jdbc :only [with-connection]]))
 
-(def *datasource* nil)
+(def ^:dynamic *datasource* nil)
 
 (defn load-user-config [source-name]
   (let [overrides (java.io.File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact-id *project*) ".clj"))]
