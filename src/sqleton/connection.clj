@@ -7,7 +7,7 @@
 
 (def ^:dynamic *datasource* nil)
 
-(def exception (atom false))
+(def last-exception (atom false))
 
 (defn load-user-config [source-name]
   (let [overrides (java.io.File. (str (System/getProperty "user.home") "/.sqleton/" (:artifact-id *project*) ".clj"))]
@@ -45,12 +45,10 @@
      (do ~@forms)
      (binding [*datasource* (datasource ~source-name)]
        (try
-         (let [return# (with-connection *datasource*
-                        ~@forms)]
-           (reset! exception false)
-           return#)
+         (with-connection *datasource*
+           ~@forms)
          (catch java.sql.SQLException e#
-           (reset! exception e#)
+           (reset! last-exception e#)
            (if (pg-connection-error (.getSQLState e#))
              (throw (java.sql.SQLException.
                      (str "Could not connect to: " (pr-str *datasource*)) e#))
