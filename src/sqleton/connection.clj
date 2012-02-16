@@ -48,7 +48,8 @@
          (with-connection *datasource*
            ~@forms)
          (catch java.sql.SQLException e#
-           (reset! last-exception e#)
+           (reset! last-exception {:time (System/currentTimeMillis)
+                                   :exception e#})
            (if (pg-connection-error (.getSQLState e#))
              (throw (java.sql.SQLException.
                      (str "Could not connect to: " (pr-str *datasource*)) e#))
