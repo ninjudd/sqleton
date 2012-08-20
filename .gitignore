@@ -1,10 +1,5 @@
-.cake
+.lein*
 pom.xml
-*.jar
-*.war
-lib
-classes
-build
-/sqleton
+target
 *~
 *#
