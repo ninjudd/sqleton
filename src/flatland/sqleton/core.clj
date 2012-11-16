@@ -1,4 +1,4 @@
-(ns sqleton.core
+(ns flatland.sqleton.core
   (:require [clojure.java.jdbc :as sql]))
 
 (defn execute-file [file]

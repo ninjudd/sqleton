@@ -1,7 +1,7 @@
-(ns sqleton.connection
+(ns flatland.sqleton.connection
   (:use [clojure.string :only [join]]
         [clojure.java.jdbc :only [with-connection]]
-        [useful.exception :only [exception-map]]))
+        [flatland.useful.exception :only [exception-map]]))
 
 (def ^:dynamic *datasource* nil)
 
