@@ -43,8 +43,8 @@
   "Returns a map appropriate for either a jndi or traditional data source."
   [source-name]
   (let [defaults (get-in @config [:db source-name])]
-    (-> (if-let [pool-config (:pooled defaults)]
-          (bonecp-datasource (merge pool-config (overrides source-name)))
+    (-> (if (:pooled defaults)
+          (bonecp-datasource (merge defaults (overrides source-name)))
           (into {:classname   "org.postgresql.Driver"
                  :subprotocol "postgresql"}
                 (if (:name defaults)
